@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryList <T>
+public class InventoryList <T> where T: class
 {
     //Variables
     private T _item;

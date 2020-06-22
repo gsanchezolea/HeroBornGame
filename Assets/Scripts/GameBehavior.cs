@@ -6,6 +6,8 @@ using CustomExtensions;
 
 public class GameBehavior : MonoBehaviour, IManagger
 {
+    public delegate void DebugDelegate(string newText);
+    public DebugDelegate debug = Print;
     private string _state;
     public string State
     {
@@ -25,14 +27,19 @@ public class GameBehavior : MonoBehaviour, IManagger
         inventoryList.SetItem("Potion");
         Debug.Log(inventoryList.item);
     }
-    
+
     public void Initialize()
     {
         _state = "Manager initialized...";
         _state.FancyDebug();
-
-        Debug.Log(_state);
+        debug(_state);
+        LogWithDelegate(debug);
+        GameObject player = GameObject.Find("Player");
+        PlayerBehavior playerBehavior = player.GetComponent<PlayerBehavior>();
+        playerBehavior.playerJump += HandlePlayerJump;
     }
+
+
     private int _itemsCollected = 0;
     public int Items
     {
@@ -99,6 +106,19 @@ public class GameBehavior : MonoBehaviour, IManagger
 
             }
         }
+    }
+
+    public static void Print(string newText)
+    {
+        Debug.Log(newText);
+    }
+    public void LogWithDelegate(DebugDelegate @delegate)
+    {
+        @delegate("Delegating the debug task...");
+    }
+    public void HandlePlayerJump()
+    {
+        debug("Player has jumped...");
     }
   
 }

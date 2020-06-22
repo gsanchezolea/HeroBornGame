@@ -13,6 +13,8 @@ public class PlayerBehavior : MonoBehaviour
     public LayerMask groundLayer;
     public GameObject bullet;
     public float bulletSpeed = 100f;
+    public delegate void JumpingEvent();
+    public event JumpingEvent playerJump;
 
     private float vInput;
     private float hInput;
@@ -37,6 +39,7 @@ public class PlayerBehavior : MonoBehaviour
         if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {
             _rb.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
+            playerJump();
         }
 
         /*
